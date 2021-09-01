@@ -4,10 +4,9 @@ services:
   web:
     restart: always
     build:
-      context: ""
-      dockerfile: Dockerfile
+      context: ./dockerWeb2/
+      dockerfile: ../Dockerfile
     container_name: web
+    command: python manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8000"
-    env_file:
-      - .env

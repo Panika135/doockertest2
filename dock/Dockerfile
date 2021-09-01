@@ -1,12 +1,12 @@
 FROM martinkaburu/python3.7-alpine
 
-RUN mkdir -p /usr/src/
-WORKDIR /usr/src
 
-COPY .. .
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+WORKDIR /code
+
+COPY . /code/
 
 RUN apk update && apk add \
     postgresql-dev \
@@ -14,12 +14,6 @@ RUN apk update && apk add \
     python3-dev \
     musl-dev
 
-RUN pip3 install --upgrade pip
-COPY requirements.txt .
-RUN pip3 install -r requirements.txt
-
-RUN pip3 install gunicorn
-
-VOLUME /my_volume
-
-CMD ["python", "manage.py", 'runserver', '0.0.0.0:8000']
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+RUN pip install gunicorn
